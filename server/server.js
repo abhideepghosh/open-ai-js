@@ -16,9 +16,14 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/", async (req, res) => {
-  res.status(200).send({
-    message: "Hello, This Is me, The Mighty Wizard Of Code!",
-  });
+  try {
+    res.status(200).send({
+      message: "Hello, This Is me, The Mighty Wizard Of Code!",
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ err });
+  }
 });
 
 app.post("/", async (req, res) => {
