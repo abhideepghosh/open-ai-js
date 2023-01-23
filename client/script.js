@@ -54,49 +54,44 @@ const chatStripe = (isAi, value, uniqueId) => {
 
 // Send Message To AI
 const handleSubmit = async (e) => {
-  try {
-    e.preventDefault();
-    const data = new FormData(form);
+  e.preventDefault();
+  const data = new FormData(form);
 
-    // User's ChatStripe
-    chatContainer.innerHTML += chatStripe(false, data.get("prompt"));
-    form.reset();
+  // User's ChatStripe
+  chatContainer.innerHTML += chatStripe(false, data.get("prompt"));
+  form.reset();
 
-    // Bot's ChatStripe
-    const uniqueId = generateUniqueId();
-    chatContainer.innerHTML += chatStripe(true, " ", uniqueId);
+  // Bot's ChatStripe
+  const uniqueId = generateUniqueId();
+  chatContainer.innerHTML += chatStripe(true, " ", uniqueId);
 
-    // Scroll Down To The Current Message
-    chatContainer.scrollTop = chatContainer.scrollHeight;
+  // Scroll Down To The Current Message
+  chatContainer.scrollTop = chatContainer.scrollHeight;
 
-    const messageDiv = document.getElementById(uniqueId);
-    loader(messageDiv);
+  const messageDiv = document.getElementById(uniqueId);
+  loader(messageDiv);
 
-    // Fetch Data From The Server -> Bot's Response
-    const response = await fetch("https://ai-codewizard.onrender.com/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        prompt: data.get("prompt"),
-      }),
-    });
+  // Fetch Data From The Server -> Bot's Response
+  const response = await fetch("https://ai-codewizard.onrender.com/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      prompt: data.get("prompt"),
+    }),
+  });
 
-    clearInterval(loadInterval);
-    messageDiv.innerHTML = "";
-    if (response.ok) {
-      const data = await response.json();
-      const parsedData = data.bot.trim();
-      typeText(messageDiv, parsedData);
-    } else {
-      const err = await response.text();
-      messageDiv.innerHTML = "Something went wrong";
-      alert(err);
-    }
-  } catch (error) {
-    clearInterval(loadInterval);
-    console.log(error);
+  clearInterval(loadInterval);
+  messageDiv.innerHTML = "";
+  if (response.ok) {
+    const data = await response.json();
+    const parsedData = data.bot.trim();
+    typeText(messageDiv, parsedData);
+  } else {
+    const err = await response.text();
+    messageDiv.innerHTML = "Something went wrong";
+    alert(err);
   }
 };
 
