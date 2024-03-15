@@ -72,21 +72,22 @@ const handleSubmit = async (e) => {
   loader(messageDiv);
 
   // Fetch Data From The Server -> Bot's Response
-  const response = await fetch("https://ai-codewizard.onrender.com/", {
+  // const response = await fetch("https://ai-codewizard.onrender.com/", {
+  const response = await fetch("http://localhost:5000/geminiapi", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      prompt: data.get("prompt"),
+      text: data.get("prompt"),
     }),
   });
 
   clearInterval(loadInterval);
   messageDiv.innerHTML = "";
-  if (response.ok) {
+  if (response) {
     const data = await response.json();
-    const parsedData = data.bot.trim();
+    const parsedData = data.response.trim();
     typeText(messageDiv, parsedData);
   } else {
     const err = await response.text();
