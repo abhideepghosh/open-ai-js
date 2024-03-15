@@ -72,8 +72,7 @@ const handleSubmit = async (e) => {
   loader(messageDiv);
 
   // Fetch Data From The Server -> Bot's Response
-  // const response = await fetch("https://ai-codewizard.onrender.com/", {
-  const response = await fetch("http://localhost:5000/geminiapi", {
+  const response = await fetch("https://ai-codewizard.onrender.com/geminiapi", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
